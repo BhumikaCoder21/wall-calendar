@@ -1,0 +1,101 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-playfair: 'Playfair Display', serif;
+  --font-dm-sans: 'DM Sans', sans-serif;
+  --font-dm-mono: 'DM Mono', monospace;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  border-radius: 2px;
+  background: rgba(0, 0, 0, 0.15);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.25);
+}
+
+/* Focus ring */
+*:focus-visible {
+  outline: 2px solid var(--accent, #2B9ED4);
+  outline-offset: 2px;
+}
+
+/* Animations */
+@keyframes slide-up-fade {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes calendar-flip {
+  0%   { transform: rotateX(0deg) scaleY(1); opacity: 1; }
+  40%  { transform: rotateX(-15deg) scaleY(0.97); opacity: 0.6; }
+  100% { transform: rotateX(0deg) scaleY(1); opacity: 1; }
+}
+
+.animate-slide-up-fade {
+  animation: slide-up-fade 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.3s ease both;
+}
+
+.animate-calendar-flip {
+  animation: calendar-flip 0.45s cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+/* Calendar day range highlight */
+.day-range-fill {
+  position: absolute;
+  inset: 0 -2px;
+  z-index: 0;
+}
+
+/* Touch devices */
+@media (hover: none) {
+  button:hover {
+    transform: none !important;
+  }
+}
+
+/* Textarea focus */
+textarea:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent, #2B9ED4);
+}
