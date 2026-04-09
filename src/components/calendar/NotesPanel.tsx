@@ -327,11 +327,28 @@ export function NotesPanel({
 }
 
 function MonthNoteCard({ note, theme, onRemove, accent }: any) {
-  return <div />;
+  return (
+    <div className="p-2 rounded-lg border text-sm flex justify-between items-start">
+      <span>{note.text}</span>
+      <button onClick={onRemove} className="opacity-50 hover:opacity-100">
+        ✕
+      </button>
+    </div>
+  );
 }
 
 function DateNoteCard({ date, note, theme, onRemove }: any) {
-  return <div />;
+  return (
+    <div className="p-2 rounded-lg border text-sm flex justify-between items-start">
+      <div>
+        <div className="text-xs opacity-60">{format(date, "MMM d, yyyy")}</div>
+        <div>{note.text}</div>
+      </div>
+      <button onClick={onRemove} className="opacity-50 hover:opacity-100">
+        ✕
+      </button>
+    </div>
+  );
 }
 
 function getDatesBetween(start: Date, end: Date): Date[] {
