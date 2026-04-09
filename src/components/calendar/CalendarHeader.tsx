@@ -109,12 +109,6 @@ export function CalendarHeader({
         >
           {month}
         </div>
-
-        {activeImage.photographer && (
-          <div className="text-xs mt-1 opacity-60 font-mono">
-            📷 {activeImage.photographer}
-          </div>
-        )}
       </div>
 
       <div className="absolute top-3 right-3 flex gap-2 z-10">
@@ -138,25 +132,23 @@ export function CalendarHeader({
         )}
       </div>
 
-      <div className="absolute left-3 top-1/2 -translate-y-1/2 flex flex-col gap-2 z-10">
-        <button
-          onClick={onPrev}
-          disabled={isFlipping}
-          className="w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
-          style={{ background: "rgba(255,255,255,0.25)", color: "#fff" }}
-        >
-          <ChevronLeft size={18} />
-        </button>
+      <button
+        onClick={onPrev}
+        disabled={isFlipping}
+        className="absolute left-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all hover:scale-110 active:scale-95 disabled:opacity-50 z-10"
+        style={{ background: "rgba(255,255,255,0.25)", color: "#fff" }}
+      >
+        <ChevronLeft size={18} />
+      </button>
 
-        <button
-          onClick={onNext}
-          disabled={isFlipping}
-          className="w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all hover:scale-110 active:scale-95 disabled:opacity-50"
-          style={{ background: "rgba(255,255,255,0.25)", color: "#fff" }}
-        >
-          <ChevronRight size={18} />
-        </button>
-      </div>
+      <button
+        onClick={onNext}
+        disabled={isFlipping}
+        className="absolute right-3 top-1/2 -translate-y-1/2 w-9 h-9 rounded-full flex items-center justify-center backdrop-blur-sm transition-all hover:scale-110 active:scale-95 disabled:opacity-50 z-10"
+        style={{ background: "rgba(255,255,255,0.25)", color: "#fff" }}
+      >
+        <ChevronRight size={18} />
+      </button>
     </div>
   );
 }
