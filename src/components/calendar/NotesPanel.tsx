@@ -2,7 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { format } from "date-fns";
-import { Plus, X, StickyNote, Calendar, Trash2 } from "lucide-react";
+import { Plus, X, StickyNote, Calendar } from "lucide-react";
 import type {
   DateNote,
   MonthNote,
@@ -55,28 +55,32 @@ export function NotesPanel({
   const [tab, setTab] = useState<Tab>("month");
   const [noteText, setNoteText] = useState("");
   const [selectedColor, setSelectedColor] = useState<NoteColor>("sky");
+
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const monthKey = toMonthKey(currentDate);
   const currentMonthNotes = monthNotes[monthKey] || [];
 
+  const hasRange = selectedRange.start !== null;
+
   const rangeNotes: Array<{ date: Date; note: DateNote }> = [];
+
   if (selectedRange.start) {
     const dates = getDatesBetween(
       selectedRange.start,
       selectedRange.end || selectedRange.start,
     );
+
     dates.forEach((d) => {
-      (dateNotes[toDateKey(d)] || []).forEach((note) =>
-        rangeNotes.push({ date: d, note }),
-      );
+      (dateNotes[toDateKey(d)] || []).forEach((note) => {
+        rangeNotes.push({ date: d, note });
+      });
     });
   }
 
-  const hasRange = selectedRange.start !== null;
-
   const handleSubmit = () => {
     if (!noteText.trim()) return;
+
     if (tab === "month") {
       onAddMonthNote(noteText.trim());
     } else if (selectedRange.start) {
@@ -84,19 +88,23 @@ export function NotesPanel({
         selectedRange.start,
         selectedRange.end || selectedRange.start,
       );
+
       dates.forEach((d) => onAddDateNote(d, noteText.trim(), selectedColor));
     }
+
     setNoteText("");
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) handleSubmit();
+    if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      handleSubmit();
+    }
   };
 
   const bg = theme === "dark" ? "bg-ink-800" : "bg-white";
   const border = theme === "dark" ? "border-ink-700" : "border-ink-100";
-  const textPrimary = theme === "dark" ? "text-ink-100" : "text-ink-800";
   const textSecondary = theme === "dark" ? "text-ink-400" : "text-ink-500";
+
   const inputBg =
     theme === "dark"
       ? "bg-ink-900 border-ink-600 text-ink-100"
@@ -104,7 +112,6 @@ export function NotesPanel({
 
   return (
     <div className={clsx("flex flex-col h-full", bg)}>
-      {/* Header */}
       <div className={clsx("px-4 pt-4 pb-0 border-b", border)}>
         <div className="flex items-center gap-1 mb-3">
           <StickyNote size={15} style={{ color: activeImage.palette.accent }} />
@@ -118,8 +125,7 @@ export function NotesPanel({
           </span>
         </div>
 
-        {/* Tabs */}
-        <div className="flex gap-0">
+        <div className="flex">
           <button
             onClick={() => setTab("month")}
             className={clsx(
@@ -134,7 +140,9 @@ export function NotesPanel({
                     color: activeImage.palette.accent,
                     borderColor: activeImage.palette.accent,
                   }
-                : { color: theme === "dark" ? "#9a8876" : "#7d6a59" }
+                : {
+                    color: theme === "dark" ? "#9a8876" : "#7d6a59",
+                  }
             }
           >
             MONTH
@@ -154,21 +162,24 @@ export function NotesPanel({
                     color: activeImage.palette.accent,
                     borderColor: activeImage.palette.accent,
                   }
-                : { color: theme === "dark" ? "#9a8876" : "#7d6a59" }
+                : {
+                    color: theme === "dark" ? "#9a8876" : "#7d6a59",
+                  }
             }
           >
             RANGE
             {hasRange && (
               <span
                 className="absolute top-1.5 right-3 w-2 h-2 rounded-full"
-                style={{ background: activeImage.palette.accent }}
+                style={{
+                  background: activeImage.palette.accent,
+                }}
               />
             )}
           </button>
         </div>
       </div>
 
-      {/* Content */}
       <div className="flex-1 overflow-y-auto px-4 py-3 space-y-2">
         {tab === "month" && (
           <>
@@ -182,6 +193,7 @@ export function NotesPanel({
                 No notes for {format(currentDate, "MMMM yyyy")} yet.
               </p>
             )}
+
             {currentMonthNotes.map((note) => (
               <MonthNoteCard
                 key={note.id}
@@ -215,9 +227,13 @@ export function NotesPanel({
                     )}
                   >
                     {selectedRange.end
-                      ? `${format(selectedRange.start!, "MMM d")} → ${format(selectedRange.end, "MMM d")}`
+                      ? `${format(selectedRange.start!, "MMM d")} → ${format(
+                          selectedRange.end,
+                          "MMM d",
+                        )}`
                       : format(selectedRange.start!, "MMM d")}
                   </p>
+
                   <button
                     onClick={onClearRange}
                     className={clsx(
@@ -229,7 +245,6 @@ export function NotesPanel({
                   </button>
                 </div>
 
-                {/* Color picker */}
                 <div className="flex gap-1.5 my-2">
                   {COLOR_OPTIONS.map((c) => (
                     <button
@@ -258,6 +273,7 @@ export function NotesPanel({
                     No notes for this range.
                   </p>
                 )}
+
                 {rangeNotes.map(({ date, note }) => (
                   <DateNoteCard
                     key={note.id}
@@ -273,7 +289,6 @@ export function NotesPanel({
         )}
       </div>
 
-      {/* Input */}
       <div className={clsx("p-4 border-t", border)}>
         {tab === "range" && !hasRange ? null : (
           <div className="space-y-2">
@@ -293,11 +308,14 @@ export function NotesPanel({
                 } as React.CSSProperties
               }
             />
+
             <button
               onClick={handleSubmit}
               disabled={!noteText.trim()}
               className="w-full py-2 rounded-lg text-sm font-bold text-white transition-all hover:brightness-110 disabled:opacity-40 flex items-center justify-center gap-2"
-              style={{ background: activeImage.palette.accent }}
+              style={{
+                background: activeImage.palette.accent,
+              }}
             >
               <Plus size={15} /> Add Note
             </button>
@@ -318,12 +336,16 @@ function DateNoteCard({ date, note, theme, onRemove }: any) {
 
 function getDatesBetween(start: Date, end: Date): Date[] {
   const dates: Date[] = [];
+
   const s = start < end ? start : end;
   const e = start < end ? end : start;
-  const cur = new Date(s);
-  while (cur <= e) {
-    dates.push(new Date(cur));
-    cur.setDate(cur.getDate() + 1);
+
+  const current = new Date(s);
+
+  while (current <= e) {
+    dates.push(new Date(current));
+    current.setDate(current.getDate() + 1);
   }
+
   return dates;
 }

@@ -72,7 +72,6 @@ export function CalendarGrid({
 
   return (
     <div className="px-4 pb-4">
-      {/* Weekday headers */}
       <div className="grid grid-cols-7 mb-1">
         {WEEKDAY_LABELS.map((label, i) => (
           <div
@@ -91,14 +90,12 @@ export function CalendarGrid({
         ))}
       </div>
 
-      {/* Day grid */}
       <div className="grid grid-cols-7 gap-y-0.5">
         {days.map((day, idx) => {
           const state = getDayState(day);
 
           return (
             <div key={idx} className="relative flex flex-col items-center">
-              {/* Range highlight */}
               {state.isInRange && (
                 <div
                   className="absolute inset-y-0 left-0 right-0 z-0"
@@ -110,7 +107,6 @@ export function CalendarGrid({
                 />
               )}
 
-              {/* Start cap */}
               {state.isStart && end && (
                 <div
                   className="absolute inset-y-0 right-0 left-1/2 z-0"
@@ -118,7 +114,6 @@ export function CalendarGrid({
                 />
               )}
 
-              {/* End cap */}
               {state.isEnd && start && (
                 <div
                   className="absolute inset-y-0 left-0 right-1/2 z-0"
@@ -166,7 +161,6 @@ export function CalendarGrid({
                 </span>
               </button>
 
-              {/* Indicators */}
               <div className="flex gap-0.5 h-1.5 items-center justify-center z-10 relative mt-0.5">
                 {state.holiday && (
                   <span
